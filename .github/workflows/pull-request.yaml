@@ -6,6 +6,7 @@ on:
 
 env:
   AOC_SESSION_COOKIE: ${{ secrets.AOC_SESSION_COOKIE }}
+  LOCALAPPDATA: ${{ vars.LOCALAPPDATA }}
 
 jobs:
   test:
@@ -18,16 +19,29 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
+
       - name: Checkout examples
         uses: actions/checkout@v4
         with:
           repository: "chad3814/aoc-copilot-examples"
           token: ${{ secrets.AOC_EXAMPLE_TOKEN }}
           path: "examples"
+
+      - name: Cache config
+        uses: actions/cache@v3
+        with:
+          key: aoc-copilot-cache
+          path: ${{ vars.LOCALAPPDATA }}
+
+      - run: mkdir -p ${{ vars.LOCALDATA }}
+      - run: ls -lR ${{ vars.LOCALDATA }}
+
       - name: Use Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
       - run: npm ci
       - run: npm run test
       - run: npm run build
