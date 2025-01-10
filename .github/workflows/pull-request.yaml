@@ -18,14 +18,13 @@ jobs:
       - name: Checkout examples
         uses: actions/checkout@v4
         with:
-          respository: "chad3814/aoc-copilot-examples"
+          repository: "chad3814/aoc-copilot-examples"
           token: ${{ secrets.AOC_EXAMPLE_TOKEN }}
           path: "examples"
       - name: Use Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: ls -l examples
       - run: npm ci
       - run: npm run test
       - run: npm run build
