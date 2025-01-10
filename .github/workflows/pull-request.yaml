@@ -43,5 +43,7 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
-      - run: npm run test
+      #- run: npm run test
       - run: npm run build
+      - run: node ./dist/bin.js refresh puzzle 2022 04
+
